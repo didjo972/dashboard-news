@@ -6,7 +6,7 @@ export interface IWeatherPageState {
     timerID?: any;
 }
 
-export class WeatherPage extends Component<any, IWeatherPageState> {
+export class WeatherComponent extends Component<any, IWeatherPageState> {
     private timerID: NodeJS.Timer;
 
     constructor( props: any ) {
