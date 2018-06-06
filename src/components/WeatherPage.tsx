@@ -59,10 +59,6 @@ export class WeatherPage extends Component<any, IWeatherPageState> {
     }
 
     public render() {
-        return (
-            <div>
-                <label>Weather page</label>
-            </div>
-        );
+        return (<div id='meteo'>{this.state.content}<div id="meteo_black"/></div>);
     }
 }
