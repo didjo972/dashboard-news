@@ -3,3 +3,50 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+/* Ligne R */
+.ligneR {
+  border-width      : 4px;
+  border-style      : solid;
+  text-align        : center;
+  width             : 24px;
+  border-color      : #edc0d8;
+  color             : #edc0d8;
+  border-radius     : 6px;
+}
+
+/* Ligne D */
+.ligneD {
+  border-width      : 4px;
+  border-style      : solid;
+  text-align        : center;
+  width             : 24px;
+  border-color      : #009d58;
+  color             : #009d58;
+  border-radius     : 6px;
+}
+
+/* horloge */
+div#horloge {
+  overflow          : hidden;
+  background-color  : rgba(0, 0, 0, 1);
+  color             : #FFF;
+  font-weight       : bold;
+  text-align        : center;
+  width             : 100%;
+}
+
+div.horloge_heure {
+  font-size         : 1000%;
+  background-color  : rgba(0, 0, 0, 1);
+}
+
+div.horloge_date {
+  font-size         : 50px;
+  background-color  : rgba(0, 0, 0, 1);
+}
+
+span.horloge_grey {
+  color             : #888;
+  font-size         : inherit;
+}
