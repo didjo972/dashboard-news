@@ -4,7 +4,6 @@ import './App.css';
 import { ClockComponent } from './components/ClockComponent';
 import { HoraireTransportComponent } from './components/HoraireTransportComponent';
 import { TrafficComponent } from './components/TrafficComponent';
-// import logo from './logo.svg';
 
 export class App extends React.Component {
 

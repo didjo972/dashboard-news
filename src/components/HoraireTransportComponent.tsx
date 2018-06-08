@@ -1,10 +1,12 @@
 import * as React from "react";
 import { Component } from "react";
 import { Table } from "react-bootstrap";
+import { IDepartures, IResponseFetchDepartures } from "../shared/interfaces";
 import { k } from "../shared/Kernel";
 
 export interface IHoraireTransportComponentState {
-    data?: any;
+    data?: IResponseFetchDepartures;
+    apiSncfKey?: string;
 }
 
 export class HoraireTransportComponent extends Component<{}, IHoraireTransportComponentState> {
@@ -12,10 +14,11 @@ export class HoraireTransportComponent extends Component<{}, IHoraireTransportCo
     timerID: NodeJS.Timer;
     state: IHoraireTransportComponentState = {
         data: undefined,
+        apiSncfKey: undefined,
     };
 
-    loadData(): void {
-        k.sncfFetch.loadInformationAbout()
+    loadData(apiSncfKeyFilled: string): void {
+        k.sncfFetch.loadInformationAbout(apiSncfKeyFilled)
             .then(data => {
                 if (data) {
                     this.setState({ data });
@@ -25,11 +28,21 @@ export class HoraireTransportComponent extends Component<{}, IHoraireTransportCo
             .catch(error => console.error(error));
     }
 
+    onSubmit(e: any): void {
+        e.preventDefault();
+    }
+
+    handlInputChange(e: any): void {
+        console.log(e.target.value);
+    }
+
     componentDidMount() {
-        this.loadData();
+        if (this.state.apiSncfKey && this.state.apiSncfKey.length > 0) {
+            this.loadData(this.state.apiSncfKey);
+        }
         this.timerID = setInterval(
             () => this.tick(),
-            5000
+            60000
         );
     }
 
@@ -64,11 +77,11 @@ export class HoraireTransportComponent extends Component<{}, IHoraireTransportCo
 
     tick() {
         const lastAccess = localStorage.getItem('lastAccessHoraire');
-        if (!lastAccess || new Date(lastAccess).getTime() + 120000 < new Date().getTime()) {
-           this.loadData();
+        if ((!lastAccess || new Date(lastAccess).getTime() + 120000 < new Date().getTime()) && 
+            this.state.apiSncfKey && this.state.apiSncfKey.length > 0) {
+            this.loadData(this.state.apiSncfKey);
         } else {
             this.setState((prevState, props) => {
-                console.log(prevState.data);
                 return { ...prevState };
             });
         }
@@ -77,14 +90,21 @@ export class HoraireTransportComponent extends Component<{}, IHoraireTransportCo
     render() {
         return (
             <div id="transport">
+            <form onSubmit={this.onSubmit}>
+                <fieldset>
+                    <legend>Enter the api key of sncf to fetch the informations about your line</legend>
+                    <input type="text" value={this.state.apiSncfKey} onChange={this.handlInputChange} />
+                </fieldset>
+                <input type="submit" value="Submit" />
+            </form>
                 {this.renderHoraire(this.state.data)}
             </div>
         );
     }
 
-    private renderHoraire(data?: any) {
+    private renderHoraire(data?: IResponseFetchDepartures) {
         if (data && data.departures) {
-            const listItem = data.departures.map((item: any, index: any) =>
+            const listItem = data.departures.map((item: IDepartures, index: number) =>
                 <tr key={index}>
                     <td><div className={this.classForIconDisplay(item.display_informations.code)}>{this.replaceLigneN(item.display_informations.code)}</div></td>
                     <td>{item.display_informations.direction}</td>
