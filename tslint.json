@@ -20,6 +20,8 @@
     "trailing-comma": false,
     "arrow-parens": false,
     "object-literal-key-quotes": false,
-    "jsx-alignment": false
+    "jsx-alignment": false,
+    // cancer !! to remove
+    "no-console": false
   }
 }
